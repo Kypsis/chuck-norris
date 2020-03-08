@@ -17,13 +17,16 @@ export default {
     JokeItem
   },
   props: { categoryName: { type: String } },
+
   mounted() {
     for (let i = 0; i < 3; i++) {
       this.$store.dispatch("fetchJoke", this.$props.categoryName);
     }
-    console.log("mounted");
-    console.log(process.env.VUE_APP_JOKESTOSHOW);
   },
+  updated() {
+    console.log(this.$store.state.jokes);
+  },
+
   data() {
     return {
       jokesToShow: Number(process.env.VUE_APP_JOKESTOSHOW)
@@ -34,14 +37,15 @@ export default {
       return this.$store.state.categories;
     },
     jokes: function() {
-      // Get n amount (default 3) of jokes that were added last
-      return this.$store.state.jokes.slice(-this.jokesToShow);
+      return this.$store.state.jokes;
     }
   },
   watch: {
-    categoryName: function(newValue) {
+    categoryName: function(newCategory) {
+      this.$store.dispatch("clearJokes");
+
       for (let i = 0; i < 3; i++) {
-        this.$store.dispatch("fetchJoke", newValue);
+        this.$store.dispatch("fetchJoke", newCategory);
       }
     }
   }
