@@ -2,8 +2,8 @@
   <v-tab-item :key="categoryName" :value="categoryName">
     <JokeItem
       v-for="(item, index) in jokesToShow"
-      :key="index"
       :joke="jokes[index]"
+      :key="index"
     />
   </v-tab-item>
 </template>

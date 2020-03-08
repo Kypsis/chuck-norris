@@ -18,6 +18,11 @@ export default new Vuex.Store({
         ...state.jokes,
         { id: payload.id, value: payload.value, favorited: false }
       ];
+    },
+    makeFavorite(state, payload) {
+      state.jokes = state.jokes.map(joke =>
+        joke.id === payload ? { ...joke, favorited: !joke.favorited } : joke
+      );
     }
   },
   actions: {
@@ -39,6 +44,9 @@ export default new Vuex.Store({
           }
         })
         .catch(error => console.log(error.message));
+    },
+    makeFavorite(context, jokeId) {
+      context.commit("makeFavorite", jokeId);
     }
   },
   modules: {}
