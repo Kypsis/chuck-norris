@@ -14,7 +14,7 @@
             <v-tab
               v-for="category in categories"
               :key="category"
-              :href="`#tab-${category}`"
+              :href="`#${category}`"
             >
               {{ category }}
             </v-tab>
@@ -23,7 +23,7 @@
       </v-toolbar>
 
       <v-tabs-items v-model="tabs">
-        <Category />
+        <Category :categoryName="tabs" />
       </v-tabs-items>
     </v-card>
   </v-app>
@@ -45,7 +45,7 @@ export default {
   },
   data() {
     return {
-      tabs: "tabs"
+      tabs: "animal"
     };
   },
   props: {

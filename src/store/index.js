@@ -27,9 +27,9 @@ export default new Vuex.Store({
         .then(response => context.commit("fetchCategories", response.data))
         .catch(error => console.log(error.message));
     },
-    fetchJoke(context) {
+    fetchJoke(context, categoryName = "animal") {
       axios
-        .get(`${process.env.VUE_APP_BASEURL}/random?category=animal`)
+        .get(`${process.env.VUE_APP_BASEURL}/random?category=${categoryName}`)
         .then(response => {
           // Check if fetched joke already in state.jokes, refetch if true
           if (context.state.jokes.some(joke => joke.id === response.data.id)) {

@@ -1,13 +1,11 @@
 <template>
-  <div>
-    <v-tab-item
-      v-for="(category, index) in categories"
+  <v-tab-item :key="categoryName" :value="categoryName">
+    <JokeItem
+      v-for="(item, index) in jokesToShow"
       :key="index"
-      :value="`tab-${category}`"
-    >
-      <JokeItem v-for="(item, index) in 3" :key="index" :joke="jokes[index]" />
-    </v-tab-item>
-  </div>
+      :joke="jokes[index]"
+    />
+  </v-tab-item>
 </template>
 
 <script>
@@ -18,20 +16,33 @@ export default {
   components: {
     JokeItem
   },
-  created() {
+  props: { categoryName: { type: String } },
+  mounted() {
     for (let i = 0; i < 3; i++) {
-      this.$store.dispatch("fetchJoke");
+      this.$store.dispatch("fetchJoke", this.$props.categoryName);
     }
+    console.log("mounted");
+    console.log(process.env.VUE_APP_JOKESTOSHOW);
   },
-  updated() {
-    console.log(this.$store.state.jokes);
+  data() {
+    return {
+      jokesToShow: Number(process.env.VUE_APP_JOKESTOSHOW)
+    };
   },
   computed: {
     categories: function() {
       return this.$store.state.categories;
     },
     jokes: function() {
-      return this.$store.state.jokes;
+      // Get n amount (default 3) of jokes that were added last
+      return this.$store.state.jokes.slice(-this.jokesToShow);
+    }
+  },
+  watch: {
+    categoryName: function(newValue) {
+      for (let i = 0; i < 3; i++) {
+        this.$store.dispatch("fetchJoke", newValue);
+      }
     }
   }
 };
