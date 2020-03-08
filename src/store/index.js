@@ -53,7 +53,7 @@ export default new Vuex.Store({
         .then(response => {
           // Check if fetched joke already in state.jokes, refetch if true
           if (context.state.jokes.some(joke => joke.id === response.data.id)) {
-            context.dispatch("fetchJoke");
+            context.dispatch("fetchJoke", categoryName);
           } else {
             context.commit("fetchJoke", response.data);
           }
@@ -70,6 +70,5 @@ export default new Vuex.Store({
         return;
       context.commit("makeFavorite", jokeData);
     }
-  },
-  modules: {}
+  }
 });

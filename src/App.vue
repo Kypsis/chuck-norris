@@ -1,8 +1,12 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-card>
-      <v-toolbar color="cyan" dark flat>
-        <v-toolbar-title>Chuck Norris Facts</v-toolbar-title>
+      <v-toolbar color="blue darken-1" dark flat>
+        <v-spacer />
+        <v-toolbar-title class="appTitle display-1 text-center"
+          >Chuck Norris Facts</v-toolbar-title
+        >
+        <v-spacer />
 
         <template v-slot:extension>
           <v-tabs
@@ -17,6 +21,11 @@
               :href="`#${category}`"
             >
               {{ category }}
+              ⭐
+              {{
+                favorites.filter(favorite => favorite.category === category)
+                  .length
+              }}
             </v-tab>
           </v-tabs>
         </template>
@@ -34,22 +43,32 @@ import Category from "./components/Category";
 
 export default {
   name: "App",
+  components: { Category },
+
   created() {
     this.$store.dispatch("fetchCategories");
   },
-  components: { Category },
+
   computed: {
     categories: function() {
       return this.$store.state.categories;
+    },
+    favorites: function() {
+      return this.$store.state.favorites;
     }
   },
+
   data() {
     return {
       tabs: "animal"
     };
-  },
-  props: {
-    source: String
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.appTitle {
+  -webkit-text-stroke: 1px black;
+  color: gold;
+}
+</style>

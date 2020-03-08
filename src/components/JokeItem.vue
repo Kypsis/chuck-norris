@@ -1,15 +1,13 @@
 <template>
-  <v-card>
+  <v-card tile>
     <v-list-item>
-      <v-card-text
-        class="jokeText"
-        @click="makeFavorite"
-        v-text="value"
-      ></v-card-text>
+      <v-list-item-content class="jokeText" @click="makeFavorite">
+        {{ jokeText }}
+      </v-list-item-content>
       <h3 v-if="favorites.some(favorite => favorite.id === id)">
         ⭐
-      </h3></v-list-item
-    >
+      </h3>
+    </v-list-item>
   </v-card>
 </template>
 
@@ -17,6 +15,7 @@
 export default {
   name: "JokeItem",
   props: { joke: { type: Object } },
+
   computed: {
     id: function() {
       return this.$props?.joke?.id;
@@ -24,10 +23,11 @@ export default {
     favorites: function() {
       return this.$store.state.favorites;
     },
-    value: function() {
+    jokeText: function() {
       return this.$props?.joke?.value;
     }
   },
+
   methods: {
     makeFavorite: function() {
       this.$store.dispatch("makeFavorite", this.$props?.joke);
